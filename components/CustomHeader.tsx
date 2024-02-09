@@ -3,6 +3,9 @@ import Image = Animated.Image;
 import {Ionicons} from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import {Link} from "expo-router";
+import BottomSheet from "./BottomSheet";
+import {useRef} from "react";
+import {BottomSheetModal} from "@gorhom/bottom-sheet";
 
 const SearchBar=()=>(
 
@@ -15,7 +18,7 @@ const SearchBar=()=>(
                 placeholder='Restaurants...'/>
         </View>
 
-            <Link href='/' asChild>
+            <Link href={'/(modal)/filter'} asChild>
                 <TouchableOpacity style={styles.optionsButton}>
                     <Ionicons name='options-outline' size={20} color={Colors.primary} style={styles.searchIcon}/>
                 </TouchableOpacity>
@@ -26,16 +29,23 @@ const SearchBar=()=>(
 
 
 const CustomHeader = () => {
+    const bottomSheetRef=useRef<BottomSheetModal>(null)
+    const openModal=()=>{
+        bottomSheetRef.current?.present()
+    }
     return (
         <SafeAreaView style={styles.safeArea}>
+            <BottomSheet ref={bottomSheetRef}/>
             <View style={styles.container}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={openModal}>
                     <Image
                         style={styles.img}
                         source={require('../assets/images/bike.png')}/>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.tittleContainer}>
+                <TouchableOpacity
+                    onPress={openModal}
+                    style={styles.tittleContainer}>
                     <Text style={styles.title}>Deliver ~ Now</Text>
                     <View style={styles.locationName}>
                         <Text style={styles.subtitle}>Chicago</Text>
